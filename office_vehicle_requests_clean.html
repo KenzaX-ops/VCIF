@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Office Vehicle Info</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@400;500;600;700&family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#05070d; --blue:#2f7bff; --blue2:#6aa8ff; --ice:#eaf2ff; --white:#fff;
+  --glass2:rgba(255,255,255,.12); --line:rgba(255,255,255,.16); --muted:rgba(234,242,255,.62);
+  --green:#2ee59d; --red:#ff4d5e; --r:22px;
+}
+*{box-sizing:border-box;margin:0}
+html{background:var(--ink);color-scheme:dark}
+body{
+  font-family:"Noto Sans Myanmar","Sora",system-ui,sans-serif;color:var(--ice);min-height:100vh;line-height:1.6;
+  background:
+   radial-gradient(900px 520px at 12% -8%,rgba(47,123,255,.45),transparent 60%),
+   radial-gradient(700px 480px at 100% 10%,rgba(106,168,255,.22),transparent 60%),
+   radial-gradient(800px 600px at 50% 120%,rgba(47,123,255,.25),transparent 60%),var(--ink);
+  background-attachment:fixed;
+  padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0);
+}
+.glass{
+  background:linear-gradient(145deg,rgba(255,255,255,.14),rgba(255,255,255,.04));
+  border:1px solid var(--line);border-radius:var(--r);
+  backdrop-filter:blur(22px) saturate(160%);-webkit-backdrop-filter:blur(22px) saturate(160%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 18px 50px -20px rgba(0,0,0,.7);
+}
+
+/* ===== intro animation ===== */
+#intro{position:fixed;inset:0;z-index:100;background:var(--ink);display:grid;place-items:center;overflow:hidden;
+  animation:introOut .8s cubic-bezier(.7,0,.2,1) 2.3s forwards}
+#intro::before{content:"";position:absolute;inset:0;
+  background:radial-gradient(600px 400px at 50% 50%,rgba(47,123,255,.4),transparent 70%);opacity:0;animation:fadeIn 1s .1s forwards}
+.stage{position:relative;width:min(520px,86vw);text-align:center}
+.road{position:relative;height:3px;margin:0 auto 26px;width:100%;background:rgba(255,255,255,.12);border-radius:3px;overflow:hidden}
+.road::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,var(--blue2),transparent);
+  transform:translateX(-100%);animation:sweep 1.5s .3s ease-in-out forwards}
+.car-run{position:absolute;left:0;top:-46px;width:64px;height:64px;transform:translateX(-90px);
+  animation:drive 1.6s .2s cubic-bezier(.3,.7,.2,1) forwards}
+.car-run svg{width:64px;height:64px;filter:drop-shadow(0 0 18px rgba(47,123,255,.9))}
+.intro-title{font-family:"Sora","Noto Sans Myanmar",sans-serif;font-weight:700;font-size:clamp(1.6rem,6vw,2.4rem);letter-spacing:-.01em;margin-top:50px}
+.intro-title span{display:inline-block;opacity:0;transform:translateY(16px);animation:rise .5s forwards}
+.intro-sub{color:var(--muted);font-size:.9rem;opacity:0;animation:fadeIn .6s 1.5s forwards}
+@keyframes drive{to{transform:translateX(min(480px,80vw))}}
+@keyframes sweep{to{transform:translateX(100%)}}
+@keyframes rise{to{opacity:1;transform:none}}
+@keyframes fadeIn{to{opacity:1}}
+@keyframes introOut{to{opacity:0;visibility:hidden;transform:scale(1.06)}}
+
+/* ===== layout ===== */
+.wrap{max-width:900px;margin:0 auto;padding:28px 18px 80px}
+.reveal{opacity:0;transform:translateY(18px);animation:rise .7s cubic-bezier(.2,.8,.2,1) forwards}
+header{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:22px}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;
+  background:linear-gradient(145deg,var(--blue),#123c94);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 10px 30px -8px var(--blue)}
+.logo svg{width:26px;height:26px}
+h1{font-family:"Sora","Noto Sans Myanmar",sans-serif;font-size:1.35rem;font-weight:700;letter-spacing:-.01em}
+.sub{font-size:.82rem;color:var(--muted)}
+.btn{font:inherit;color:var(--white);cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.07);
+  padding:10px 14px;border-radius:14px;display:inline-flex;align-items:center;gap:8px;transition:background .2s,transform .15s}
+.btn:hover{background:var(--glass2)}.btn:active{transform:scale(.96)}
+.btn svg{width:16px;height:16px}
+.btn.on{background:linear-gradient(145deg,var(--blue),#1d56c9);border-color:rgba(255,255,255,.3)}
+.spin svg{animation:sp 1s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
+
+/* vehicle status */
+.vehicle{display:flex;align-items:center;gap:18px;padding:18px 20px;margin-bottom:16px}
+.vicon{position:relative;width:68px;height:68px;border-radius:20px;display:grid;place-items:center;flex:none;
+  background:rgba(47,123,255,.16);border:1px solid rgba(106,168,255,.4)}
+.vicon svg{width:38px;height:38px}
+.dot{position:absolute;top:-5px;right:-5px;width:20px;height:20px;border-radius:50%;border:3px solid #0a1224;background:var(--green);
+  box-shadow:0 0 14px var(--green);transition:background .4s,box-shadow .4s}
+.dot.red{background:var(--red);box-shadow:0 0 14px var(--red)}
+.dot.green{animation:pulse 2s infinite}
+.dot.grey{background:#6b7488;box-shadow:none}
+@keyframes pulse{50%{box-shadow:0 0 0 7px rgba(46,229,157,0)}0%{box-shadow:0 0 0 0 rgba(46,229,157,.6)}}
+.vtext b{display:block;font-size:1.08rem}
+.vtext span{font-size:.86rem;color:var(--muted)}
+.vtext{flex:1;min-width:0}
+.tl{margin-top:14px;grid-column:1/-1}
+.vwrap{display:flex;flex-wrap:wrap;align-items:center;gap:18px}
+.vwrap .tl{flex:1 1 100%}
+.bar24{position:relative;height:14px;border-radius:99px;background:rgba(46,229,157,.55);overflow:hidden}
+.bar24 i{position:absolute;top:0;bottom:0;background:var(--red);box-shadow:0 0 10px var(--red);transform-origin:left;animation:grow .7s ease-out both}
+@keyframes grow{from{transform:scaleX(0)}}
+.ticks{display:flex;justify-content:space-between;font-size:.7rem;color:var(--muted);margin-top:6px}
+
+/* date search */
+.dbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:12px;margin-bottom:18px}
+.dbar input[type=date]{font:inherit;color:var(--white);background:rgba(0,0,0,.3);border:1px solid var(--line);border-radius:13px;
+  padding:10px 14px;outline:none;flex:1 1 170px;min-width:0;color-scheme:dark}
+.dbar input:focus{border-color:var(--blue2);box-shadow:0 0 0 3px rgba(47,123,255,.3)}
+
+/* cards */
+.list{display:grid;gap:12px}
+.card{padding:15px 18px;display:grid;grid-template-columns:auto 1fr auto;gap:15px;align-items:center;cursor:pointer;
+  opacity:0;animation:rise .55s cubic-bezier(.2,.8,.2,1) forwards;transition:transform .2s,border-color .2s}
+.card:hover{transform:translateY(-2px);border-color:rgba(106,168,255,.6)}
+.cicon{position:relative;width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:rgba(47,123,255,.16);border:1px solid rgba(106,168,255,.35)}
+.cicon svg{width:26px;height:26px}
+.cicon .dot{width:15px;height:15px;top:-4px;right:-4px;border-width:2.5px}
+.who{font-weight:600;font-size:1.02rem}
+.dept{font-size:.82rem;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{font-size:.76rem;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.08);border:1px solid var(--line)}
+.chip.warn{background:rgba(255,77,94,.14);border-color:rgba(255,77,94,.5);color:#ff98a2}
+.badge{font-size:.78rem;font-weight:600;padding:5px 12px;border-radius:99px;border:1px solid;white-space:nowrap}
+.s-ok{color:var(--green);background:rgba(46,229,157,.12);border-color:rgba(46,229,157,.45)}
+.s-wait{color:#ffc857;background:rgba(255,200,87,.12);border-color:rgba(255,200,87,.45)}
+.s-no{color:#ff8b97;background:rgba(255,77,94,.12);border-color:rgba(255,77,94,.45)}
+.s-na{color:var(--muted);background:rgba(255,255,255,.06);border-color:var(--line)}
+
+.msg{padding:34px 24px;text-align:center}
+.msg h3{margin-bottom:8px}.msg p{color:var(--muted);max-width:520px;margin:0 auto 14px;font-size:.92rem}
+.skeleton{height:88px;border-radius:var(--r);background:linear-gradient(100deg,rgba(255,255,255,.05) 30%,rgba(255,255,255,.12) 50%,rgba(255,255,255,.05) 70%);
+  background-size:200% 100%;animation:sh 1.3s infinite}@keyframes sh{to{background-position:-200% 0}}
+.modal{position:fixed;inset:0;display:none;place-items:center;padding:18px;background:rgba(2,4,10,.7);backdrop-filter:blur(6px);z-index:50}
+.modal.open{display:grid}
+.sheet{width:min(560px,100%);max-height:86vh;overflow:auto;padding:24px;animation:pop .25s ease-out}
+@keyframes pop{from{transform:translateY(16px) scale(.97);opacity:0}}
+.sheet h2{font-size:1.2rem}
+.rows{margin-top:16px}
+.row{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid var(--line);font-size:.92rem}
+.row span:first-child{color:var(--muted);flex:0 0 40%}.row span:last-child{text-align:right;word-break:break-word}
+footer{margin-top:40px;text-align:center;font-size:.8rem;color:var(--muted)}
+footer a{color:var(--blue2);text-decoration:none}
+:focus-visible{outline:2px solid var(--blue2);outline-offset:2px}
+@media(max-width:600px){.card{grid-template-columns:auto 1fr}.card .badge{grid-column:1/-1;justify-self:start}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-delay:0s!important}}
+</style>
+</head>
+<body>
+
+<div id="intro" aria-hidden="true">
+  <div class="stage">
+    <div class="road"><div class="car-run">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M3 13l2-6a2 2 0 0 1 2-1.4h10a2 2 0 0 1 2 1.4l2 6v4h-3v-2H6v2H3z"/><circle cx="7.5" cy="13" r=".7"/><circle cx="16.5" cy="13" r=".7"/></svg>
+    </div></div>
+    <div class="intro-title" id="introTitle"></div>
+    <div class="intro-sub">ကားတောင်းခံမှု စာရင်း</div>
+  </div>
+</div>
+
+<div class="wrap">
+  <header class="reveal" style="animation-delay:2.7s">
+    <div class="brand">
+      <div class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M3 13l2-6a2 2 0 0 1 2-1.4h10a2 2 0 0 1 2 1.4l2 6v4h-3v-2H6v2H3z"/><circle cx="7.5" cy="13" r=".6"/><circle cx="16.5" cy="13" r=".6"/></svg></div>
+      <div><h1>Office Vehicle Info</h1><div class="sub" id="updated">ကားတောင်းခံမှု စာရင်းများ</div></div>
+    </div>
+    <button class="btn" id="refresh" aria-label="ပြန်လည်ရယူမည်"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>ပြန်ယူမည်</button>
+  </header>
+
+  <section class="vehicle glass reveal" style="animation-delay:2.85s">
+    <div class="vwrap">
+      <div class="vicon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M3 13l2-6a2 2 0 0 1 2-1.4h10a2 2 0 0 1 2 1.4l2 6v4h-3v-2H6v2H3z"/><circle cx="7.5" cy="13" r=".7"/><circle cx="16.5" cy="13" r=".7"/></svg>
+        <span class="dot grey" id="vdot"></span>
+      </div>
+      <div class="vtext"><b>Vehicle 1</b><span id="vstate">စစ်ဆေးနေသည်…</span></div>
+      <div class="tl">
+        <div class="bar24" id="bar"></div>
+        <div class="ticks"><span>0</span><span>6</span><span>12</span><span>18</span><span>24</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="dbar glass reveal" style="animation-delay:3s">
+    <button class="btn" id="prev" aria-label="ယခင်ရက်">‹</button>
+    <input id="date" type="date" aria-label="ရက်စွဲ ရှာရန်">
+    <button class="btn" id="next" aria-label="နောက်ရက်">›</button>
+    <button class="btn on" id="today">ယနေ့</button>
+    <button class="btn" id="tomorrow">မနက်ဖြန်</button>
+    <button class="btn" id="all">အားလုံး</button>
+  </div>
+
+  <main class="list" id="list"></main>
+  <footer class="reveal" style="animation-delay:3.1s">Founder – Oliver Knox · Telegram <a href="https://t.me/oliiverknox" target="_blank" rel="noopener">@oliiverknox</a> · <a href="mailto:vyysxo@gmail.com">Gmail</a></footer>
+</div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true"><div class="sheet glass" id="sheet"></div></div>
+
+<script>
+/* ====== CONFIG ====== */
+const SHEET_ID  = "1cfZ7BHKVWgUuwQXifJWKlblrDLkxrYpzqzAPza1llSA";
+const SHEET_TAB = "ခရီးစဉ်တောင်းခံမှုမှတ်တမ်း";
+const AUTO_REFRESH_MS = 60000;
+/* ==================== */
+const $ = s => document.querySelector(s);
+const CAR = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M3 13l2-6a2 2 0 0 1 2-1.4h10a2 2 0 0 1 2 1.4l2 6v4h-3v-2H6v2H3z"/><circle cx="7.5" cy="13" r=".7"/><circle cx="16.5" cy="13" r=".7"/></svg>';
+const esc=s=>String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+const pad=n=>String(n).padStart(2,"0");
+const isoOf=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const todayISO=()=>isoOf(new Date());
+const addDays=(iso,n)=>{const d=new Date(iso+"T00:00:00");d.setDate(d.getDate()+n);return isoOf(d)};
+
+/* intro title letters */
+(function(){const t="Office Vehicle Info";$("#introTitle").innerHTML=[...t].map((c,i)=>`<span style="animation-delay:${.5+i*.045}s">${c===" "?"&nbsp;":c}</span>`).join("");})();
+
+let rows=[],headers=[],map={},selDate=todayISO(),showAll=false;
+
+const PATTERNS=[
+  ["date",/အသုံးပြုမည့်ရက်စွဲ|use.*date/i],
+  ["created",/created|submitted|timestamp|requested\s*at|ပို့သည့်|^ရက်စွဲ$/i],
+  ["status",/သွားမည်|status|state|အခြေအနေ|အတည်ပြု/i],
+  ["name",/requester|request(ed)?\s*by|name|staff|employee|user|အမည်|တောင်းခံသူ|တောင်းသူ/i],
+  ["dept",/dept|department|division|ဌာန/i],
+  ["vehicle",/vehicle|car|plate|ကား/i],
+  ["dest",/လမ်းကြောင်း|အကြောင်းအရာ|dest|route|place|location|purpose|ခရီး|နေရာ/i],
+  ["female",/^မ\s*\(|female|အမျိုးသမီး/i],
+  ["male",/^ကျား|male|အမျိုးသား/i]
+];
+const TIME_RE=/time|start|end|from|until|အချိန်|နာရီ|ထွက်|ပြန်/i;
+function detect(){
+  map={times:[]};const used=new Set();
+  PATTERNS.forEach(([k,re])=>{const i=headers.findIndex((h,i)=>!used.has(i)&&re.test(h));if(i>=0){map[k]=i;used.add(i)}});
+  const pi=headers.findIndex((h,i)=>!used.has(i)&&/အကြောင်းအရာ|purpose/i.test(h));
+  if(pi>=0){map.purpose=pi;used.add(pi)}
+  headers.forEach((h,i)=>{if(!used.has(i)&&TIME_RE.test(h))map.times.push(i)});
+}
+const cell=(r,k)=>map[k]===undefined?"":r.c[map[k]];
+
+function normDate(x){
+  if(!x)return "";
+  if(typeof x.v==="string"){const m=x.v.match(/^Date\((\d+),(\d+),(\d+)/);if(m)return `${m[1]}-${pad(+m[2]+1)}-${pad(+m[3])}`}
+  const f=String(x.f??x.v??"").trim();let m;
+  if(m=f.match(/(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})/))return `${m[1]}-${pad(m[2])}-${pad(m[3])}`;
+  if(m=f.match(/(\d{1,2})[-\/.](\d{1,2})[-\/.](\d{2,4})/))return `${m[3].length===2?"20"+m[3]:m[3]}-${pad(m[2])}-${pad(m[1])}`;
+  const d=new Date(f);return isNaN(d)?"":isoOf(d);
+}
+const fmtDate=iso=>{if(!iso)return "";const[y,m,d]=iso.split("-");return `${d}.${m}.${y}`};
+function mins(x){ // returns minutes-of-day list from a cell
+  const out=[];const f=String(x.f??x.v??"");
+  const re=/(\d{1,2})[:.](\d{2})\s*([AaPp][Mm]|နံနက်|မနက်|ညနေ|ည|နေ့လယ်|မွန်းလွဲ)?/g;let m;
+  while(m=re.exec(f)){let h=+m[1];const mi=+m[2];const ap=(m[3]||"").toLowerCase();
+    const isPM=ap==="pm"||/ညနေ|ည|မွန်းလွဲ/.test(ap)||(ap==="နေ့လယ်"&&h<12);
+    const isAM=ap==="am"||/နံနက်|မနက်/.test(ap);
+    if(isPM&&h<12)h+=12;if(isAM&&h===12)h=0;out.push(h*60+mi)}
+  if(!out.length&&typeof x.v==="string"){const t=x.v.match(/^Date\(\d+,\d+,\d+,(\d+),(\d+)/);if(t)out.push(+t[1]*60+ +t[2])}
+  return out;
+}
+function slotOf(r){
+  const all=[];map.times.forEach(i=>all.push(...mins(r.cells[i])));
+  if(!all.length)return null;
+  let s=all[0],e=all.length>1?all[1]:s+60;
+  if(e<=s)e=all.length>1&&all[1]<s?1440:s+60;
+  return [Math.max(0,s),Math.min(1440,e)];
+}
+const fmt=m=>`${pad(Math.floor(m/60)%24)}:${pad(m%60)}`;
+
+function statusInfo(s){
+  s=String(s).trim().toLowerCase();
+  if(/မသွား|reject|den|declin|cancel|ပယ်|ငြင်း/.test(s))return["s-no","မသွားဖြစ်ပါ","no"];
+  if(/သွားမည်|approv|accept|confirm|အတည်ပြု|ခွင့်ပြု/.test(s))return["s-ok","သွားမည်","ok"];
+  if(!s||/pend|wait|new|review|စောင့်|ဆိုင်း/.test(s))return["s-wait","စောင့်ဆိုင်းဆဲ","wait"];
+  return["s-na",s,"na"];
+}
+const isActive=r=>statusInfo(cell(r,"status"))[2]!=="no";
+
+async function load(){
+  const btn=$("#refresh");btn.classList.add("spin");
+  if(!rows.length)$("#list").innerHTML='<div class="skeleton"></div>'.repeat(3);
+  try{
+    const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&headers=1&range=A4:L&sheet=${encodeURIComponent(SHEET_TAB)}&_=${Date.now()}`;
+    const res=await fetch(url);if(!res.ok)throw new Error("HTTP "+res.status);
+    const txt=await res.text();
+    const json=JSON.parse(txt.substring(txt.indexOf("{"),txt.lastIndexOf("}")+1));
+    if(json.status==="error")throw new Error(json.errors?.[0]?.detailed_message||"sheet error");
+    let cols=json.table.cols.map(c=>c.label||"");let data=json.table.rows||[];
+    if(cols.every(l=>!l)&&data.length){cols=(data[0].c||[]).map(c=>c?String(c.f??c.v??""):"");data=data.slice(1)}
+    headers=cols.map((h,i)=>h||"Column "+(i+1));
+    rows=data.map((r,idx)=>{
+      const cells=headers.map((_,i)=>{const c=(r.c||[])[i];return c?{v:c.v,f:c.f}:{v:"",f:""}});
+      return{n:idx+1,cells,c:cells.map(x=>x.f!=null&&x.f!==""?x.f:(x.v==null?"":x.v))};
+    }).filter(r=>r.c.some(v=>String(v).trim()!==""));
+    detect();
+    rows.forEach(r=>{r.iso=normDate(r.cells[map.date]);r.slot=slotOf(r)});
+    render();
+    $("#updated").textContent="နောက်ဆုံးပြန်ယူချိန် "+new Date().toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"});
+  }catch(e){
+    const title="ဝန်ဆောင်မှု ခေတ္တရပ်ဆိုင်းနေပါသည်";
+    const desc=`လက်ရှိတွင် အချက်အလက်များ ကြည့်ရှု၍ မရနိုင်သေးပါ။ အရေးကြီးကိစ္စရှိပါက Admin (သို့မဟုတ်) Founder ထံ တိုက်ရိုက်ဆက်သွယ်မေးမြန်းနိုင်ပါသည်။<br><br>
+    <a href="https://t.me/oliiverknox" target="_blank" rel="noopener" class="btn on" style="display:inline-flex;align-items:center;gap:6px;margin-top:6px;text-decoration:none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="M21.5 2L2 9.5l7.5 3.5L21.5 2z"/><path d="M9.5 13l2.5 7.5L16 13l5.5-11-12 11z"/></svg> @oliiverknox သို့ ဆက်သွယ်ရန်
+    </a>`;
+    
+    $("#list").innerHTML=`<div class="msg glass"><h3>${title}</h3>
+    <p>${desc}</p>
+    <button class="btn on" onclick="load()" style="margin-top:12px">ထပ်ကြိုးစားမည်</button></div>`;
+  }finally{btn.classList.remove("spin")}
+}
+
+function renderVehicle(){
+  const day=rows.filter(r=>r.iso===selDate&&isActive(r));
+  const bar=$("#bar"),dot=$("#vdot"),st=$("#vstate");
+  bar.innerHTML=day.filter(r=>r.slot).map(r=>`<i title="${fmt(r.slot[0])}–${fmt(r.slot[1])}" style="left:${r.slot[0]/14.4}%;width:${Math.max(.8,(r.slot[1]-r.slot[0])/14.4)}%"></i>`).join("");
+  const isToday=selDate===todayISO();
+  let busy;
+  if(isToday){
+    const n=new Date(),now=n.getHours()*60+n.getMinutes();
+    busy=day.some(r=>r.slot?(now>=r.slot[0]&&now<r.slot[1]):false);
+    st.textContent=busy?"ယခု အချိန်တွင် မအားပါ (တောင်းထားပြီး)":(day.length?"ယခု အားနေသည် · ယနေ့ တောင်းထားသော အချိန်များ အနီရောင်ပြထားသည်":"ယနေ့ တစ်ရက်လုံး အားနေသည်");
+  }else{
+    busy=day.length>0;
+    st.textContent=busy?"ဤရက်တွင် တောင်းထားသော အချိန်များ မအားပါ (အနီရောင်)":"ဤရက်တွင် တစ်ရက်လုံး အားနေသည်";
+  }
+  dot.className="dot "+(busy?"red":"green");
+}
+
+function render(){
+  renderVehicle();
+  $("#date").value=showAll?"":selDate;
+  ["today","tomorrow","all"].forEach(id=>$("#"+id).classList.remove("on"));
+  if(showAll)$("#all").classList.add("on");
+  else if(selDate===todayISO())$("#today").classList.add("on");
+  else if(selDate===addDays(todayISO(),1))$("#tomorrow").classList.add("on");
+
+  const out=rows.filter(r=>showAll||r.iso===selDate)
+    .sort((a,b)=>showAll?(a.iso.localeCompare(b.iso)||a.n-b.n):((a.slot?a.slot[0]:0)-(b.slot?b.slot[0]:0)||a.n-b.n));
+  if(!out.length){
+    $("#list").innerHTML=`<div class="msg glass"><h3>ဤရက်တွင် တောင်းထားခြင်း မရှိပါ</h3><p>Vehicle 1 သည် ${showAll?"":esc(fmtDate(selDate))+" တွင် "}တစ်ရက်လုံး အားနေပါသည်။</p></div>`;return;
+  }
+  const overlap=(a,b)=>a.slot&&b.slot&&a.iso===b.iso&&a.slot[0]<b.slot[1]&&b.slot[0]<a.slot[1];
+  $("#list").innerHTML=out.map((r,i)=>{
+    const [cls,label]=statusInfo(cell(r,"status"));
+    const active=isActive(r);
+    const who=cell(r,"name")||r.c[0]||"—";
+    const chips=[];
+    if(showAll&&r.iso)chips.push(fmtDate(r.iso));
+    if(r.slot)chips.push(`${fmt(r.slot[0])} – ${fmt(r.slot[1])}`);
+    else map.times.forEach(k=>r.c[k]&&chips.push(r.c[k]));
+    ["purpose","dest"].forEach(k=>cell(r,k)&&chips.push(cell(r,k)));
+    let h=chips.map(v=>`<span class="chip">${esc(v)}</span>`).join("");
+    if(map.male!==undefined||map.female!==undefined)h+=`<span class="chip">ကျား ${esc(cell(r,"male")||0)} · မ ${esc(cell(r,"female")||0)}</span>`;
+    const clash=rows.filter(o=>o!==r&&isActive(o)&&isActive(r)&&overlap(o,r));
+    if(clash.length){const pos=[r,...clash].sort((a,b)=>a.n-b.n).indexOf(r)+1;h+=`<span class="chip warn">အချိန်ထပ်နေသည် · ${pos} ဆုံးတောင်း</span>`}
+    return`<article class="card glass" data-n="${r.n}" tabindex="0" style="animation-delay:${Math.min(i,10)*.07}s">
+      <div class="cicon">${CAR}<span class="dot ${active?"red":"grey"}"></span></div>
+      <div><div class="who">${esc(who)}</div><div class="dept">${esc(cell(r,"dept"))}${cell(r,"created")?" · တောင်းရက် "+esc(fmtDate(normDate(r.cells[map.created]))||cell(r,"created")):""}</div><div class="chips">${h}</div></div>
+      <span class="badge ${cls}">${esc(label)}</span></article>`;
+  }).join("");
+  document.querySelectorAll(".card").forEach(el=>{const o=()=>openModal(+el.dataset.n);el.onclick=o;el.onkeydown=e=>{if(e.key==="Enter")o()}});
+}
+function openModal(n){
+  const r=rows.find(x=>x.n===n);if(!r)return;const [cls,label]=statusInfo(cell(r,"status"));
+  $("#sheet").innerHTML=`<div style="display:flex;justify-content:space-between;gap:12px;align-items:start">
+  <div><h2>${esc(cell(r,"name")||r.c[0])}</h2><div class="sub">တောင်းသည့် အစဉ် #${r.n}</div></div><span class="badge ${cls}">${esc(label)}</span></div>
+  <div class="rows">${headers.map((h,i)=>r.c[i]!==""?`<div class="row"><span>${esc(h)}</span><span>${esc(r.c[i])}</span></div>`:"").join("")}</div>
+  <div style="margin-top:20px;text-align:right"><button class="btn" id="close">ပိတ်မည်</button></div>`;
+  $("#modal").classList.add("open");$("#close").onclick=closeModal;$("#close").focus();
+}
+const closeModal=()=>$("#modal").classList.remove("open");
+$("#modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+
+$("#date").addEventListener("input",e=>{if(e.target.value){selDate=e.target.value;showAll=false;render()}});
+$("#prev").onclick=()=>{showAll=false;selDate=addDays(selDate,-1);render()};
+$("#next").onclick=()=>{showAll=false;selDate=addDays(selDate,1);render()};
+$("#today").onclick=()=>{showAll=false;selDate=todayISO();render()};
+$("#tomorrow").onclick=()=>{showAll=false;selDate=addDays(todayISO(),1);render()};
+$("#all").onclick=()=>{showAll=true;render()};
+$("#refresh").onclick=load;
+
+
+load();setInterval(load,AUTO_REFRESH_MS);
+</script>
+</body>
+</html>
