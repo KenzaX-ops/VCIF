@@ -86,10 +86,18 @@ h1{font-family:"Sora","Noto Sans Myanmar",sans-serif;font-size:1.35rem;font-weig
 .tl{margin-top:14px;grid-column:1/-1}
 .vwrap{display:flex;flex-wrap:wrap;align-items:center;gap:18px}
 .vwrap .tl{flex:1 1 100%}
-.bar24{position:relative;height:14px;border-radius:99px;background:rgba(46,229,157,.55);overflow:hidden}
-.bar24 i{position:absolute;top:0;bottom:0;background:var(--red);box-shadow:0 0 10px var(--red);transform-origin:left;animation:grow .7s ease-out both}
-@keyframes grow{from{transform:scaleX(0)}}
-.ticks{display:flex;justify-content:space-between;font-size:.7rem;color:var(--muted);margin-top:6px}
+.tlbox{position:relative;padding-top:15px}
+.mer{position:absolute;top:0;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:6px;font-family:"Sora",sans-serif;font-size:.56rem;font-weight:600;letter-spacing:.1em;color:var(--muted);line-height:1}
+.mer b{width:1px;height:11px;background:var(--line)}
+.bar24{--g:rgba(46,229,157,.55);display:flex;gap:3px;height:18px}
+.blk{flex:1;min-width:0;border-radius:6px;background:var(--g);box-shadow:inset 0 0 0 1px rgba(255,255,255,.07);animation:blkIn .5s calc(var(--i)*.03s) ease-out both}
+@keyframes blkIn{from{opacity:0;transform:scaleY(.4)}}
+.ticks{position:relative;height:16px;margin-top:6px;font-size:.68rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.ticks span{position:absolute;top:0;transform:translateX(-50%)}
+.ticks span:first-child{transform:none}
+.ticks span:last-child{transform:translateX(-100%)}
+.tl-note{font-size:.68rem;color:var(--muted);text-align:right;margin-top:3px}
+@media(max-width:600px){.ticks{font-size:.61rem}}
 
 /* date search */
 .dbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:12px;margin-bottom:18px}
@@ -164,8 +172,31 @@ footer a{color:var(--blue2);text-decoration:none}
       </div>
       <div class="vtext"><b>Vehicle 1</b><span id="vstate">စစ်ဆေးနေသည်…</span></div>
       <div class="tl">
+        <div class="tlbox"><div class="mer"><span>AM</span><b></b><span>PM</span></div><div class="bar24" id="bar"></div><div class="ticks" id="ticks"></div></div><div class="tl-note">တစ်ကွက် = ၁ နာရီ</div></div>
+    <div class="intro-title" id="introTitle"></div>
+    <div class="intro-sub">ကားတောင်းခံမှု စာရင်း</div>
+  </div>
+</div>
+
+<div class="wrap">
+  <header class="reveal" style="animation-delay:2.7s">
+    <div class="brand">
+      <div class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M3 13l2-6a2 2 0 0 1 2-1.4h10a2 2 0 0 1 2 1.4l2 6v4h-3v-2H6v2H3z"/><circle cx="7.5" cy="13" r=".6"/><circle cx="16.5" cy="13" r=".6"/></svg></div>
+      <div><h1>Office Vehicle Info</h1><div class="sub" id="updated">ကားတောင်းခံမှု စာရင်းများ</div></div>
+    </div>
+    <button class="btn" id="refresh" aria-label="ပြန်လည်ရယူမည်"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>ပြန်ယူမည်</button>
+  </header>
+
+  <section class="vehicle glass reveal" style="animation-delay:2.85s">
+    <div class="vwrap">
+      <div class="vicon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M3 13l2-6a2 2 0 0 1 2-1.4h10a2 2 0 0 1 2 1.4l2 6v4h-3v-2H6v2H3z"/><circle cx="7.5" cy="13" r=".7"/><circle cx="16.5" cy="13" r=".7"/></svg>
+        <span class="dot grey" id="vdot"></span>
+      </div>
+      <div class="vtext"><b>Vehicle 1</b><span id="vstate">စစ်ဆေးနေသည်…</span></div>
+      <div class="tl">
         <div class="bar24" id="bar"></div>
-        <div class="ticks"><span>0</span><span>6</span><span>12</span><span>18</span><span>24</span></div>
+        <div class="ticks"><span>06</span><span>07</span><span>08</span><span>09</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span></div><div class="tl-note">တစ်ကွက် = ၁ နာရီ</div>
       </div>
     </div>
   </section>
@@ -251,7 +282,8 @@ function slotOf(r){
   if(e<=s)e=all.length>1&&all[1]<s?1440:s+60;
   return [Math.max(0,s),Math.min(1440,e)];
 }
-const fmt=m=>`${pad(Math.floor(m/60)%24)}:${pad(m%60)}`;
+const fmt=m=>{m=((m%1440)+1440)%1440;const h=Math.floor(m/60);return `${h%12||12}:${pad(m%60)} ${h<12?"AM":"PM"}`};
+(function(){const H=[6,7,8,9,10,11,12,1,2,3,4,5,6];$("#ticks").innerHTML=H.map((h,i)=>`<span style="left:${i*100/12}%">${h}</span>`).join("")})();
 
 function statusInfo(s){
   s=String(s).trim().toLowerCase();
@@ -275,99 +307,4 @@ async function load(){
     if(cols.every(l=>!l)&&data.length){cols=(data[0].c||[]).map(c=>c?String(c.f??c.v??""):"");data=data.slice(1)}
     headers=cols.map((h,i)=>h||"Column "+(i+1));
     rows=data.map((r,idx)=>{
-      const cells=headers.map((_,i)=>{const c=(r.c||[])[i];return c?{v:c.v,f:c.f}:{v:"",f:""}});
-      return{n:idx+1,cells,c:cells.map(x=>x.f!=null&&x.f!==""?x.f:(x.v==null?"":x.v))};
-    }).filter(r=>r.c.some(v=>String(v).trim()!==""));
-    detect();
-    rows.forEach(r=>{r.iso=normDate(r.cells[map.date]);r.slot=slotOf(r)});
-    render();
-    $("#updated").textContent="နောက်ဆုံးပြန်ယူချိန် "+new Date().toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"});
-  }catch(e){
-    const title="ဝန်ဆောင်မှု ခေတ္တရပ်ဆိုင်းနေပါသည်";
-    const desc=`လက်ရှိတွင် အချက်အလက်များ ကြည့်ရှု၍ မရနိုင်သေးပါ။ အရေးကြီးကိစ္စရှိပါက Admin (သို့မဟုတ်) Founder ထံ တိုက်ရိုက်ဆက်သွယ်မေးမြန်းနိုင်ပါသည်။<br><br>
-    <a href="https://t.me/oliiverknox" target="_blank" rel="noopener" class="btn on" style="display:inline-flex;align-items:center;gap:6px;margin-top:6px;text-decoration:none">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="M21.5 2L2 9.5l7.5 3.5L21.5 2z"/><path d="M9.5 13l2.5 7.5L16 13l5.5-11-12 11z"/></svg> @oliiverknox သို့ ဆက်သွယ်ရန်
-    </a>`;
-    
-    $("#list").innerHTML=`<div class="msg glass"><h3>${title}</h3>
-    <p>${desc}</p>
-    <button class="btn on" onclick="load()" style="margin-top:12px">ထပ်ကြိုးစားမည်</button></div>`;
-  }finally{btn.classList.remove("spin")}
-}
-
-function renderVehicle(){
-  const day=rows.filter(r=>r.iso===selDate&&isActive(r));
-  const bar=$("#bar"),dot=$("#vdot"),st=$("#vstate");
-  bar.innerHTML=day.filter(r=>r.slot).map(r=>`<i title="${fmt(r.slot[0])}–${fmt(r.slot[1])}" style="left:${r.slot[0]/14.4}%;width:${Math.max(.8,(r.slot[1]-r.slot[0])/14.4)}%"></i>`).join("");
-  const isToday=selDate===todayISO();
-  let busy;
-  if(isToday){
-    const n=new Date(),now=n.getHours()*60+n.getMinutes();
-    busy=day.some(r=>r.slot?(now>=r.slot[0]&&now<r.slot[1]):false);
-    st.textContent=busy?"ယခု အချိန်တွင် မအားပါ (တောင်းထားပြီး)":(day.length?"ယခု အားနေသည် · ယနေ့ တောင်းထားသော အချိန်များ အနီရောင်ပြထားသည်":"ယနေ့ တစ်ရက်လုံး အားနေသည်");
-  }else{
-    busy=day.length>0;
-    st.textContent=busy?"ဤရက်တွင် တောင်းထားသော အချိန်များ မအားပါ (အနီရောင်)":"ဤရက်တွင် တစ်ရက်လုံး အားနေသည်";
-  }
-  dot.className="dot "+(busy?"red":"green");
-}
-
-function render(){
-  renderVehicle();
-  $("#date").value=showAll?"":selDate;
-  ["today","tomorrow","all"].forEach(id=>$("#"+id).classList.remove("on"));
-  if(showAll)$("#all").classList.add("on");
-  else if(selDate===todayISO())$("#today").classList.add("on");
-  else if(selDate===addDays(todayISO(),1))$("#tomorrow").classList.add("on");
-
-  const out=rows.filter(r=>showAll||r.iso===selDate)
-    .sort((a,b)=>showAll?(a.iso.localeCompare(b.iso)||a.n-b.n):((a.slot?a.slot[0]:0)-(b.slot?b.slot[0]:0)||a.n-b.n));
-  if(!out.length){
-    $("#list").innerHTML=`<div class="msg glass"><h3>ဤရက်တွင် တောင်းထားခြင်း မရှိပါ</h3><p>Vehicle 1 သည် ${showAll?"":esc(fmtDate(selDate))+" တွင် "}တစ်ရက်လုံး အားနေပါသည်။</p></div>`;return;
-  }
-  const overlap=(a,b)=>a.slot&&b.slot&&a.iso===b.iso&&a.slot[0]<b.slot[1]&&b.slot[0]<a.slot[1];
-  $("#list").innerHTML=out.map((r,i)=>{
-    const [cls,label]=statusInfo(cell(r,"status"));
-    const active=isActive(r);
-    const who=cell(r,"name")||r.c[0]||"—";
-    const chips=[];
-    if(showAll&&r.iso)chips.push(fmtDate(r.iso));
-    if(r.slot)chips.push(`${fmt(r.slot[0])} – ${fmt(r.slot[1])}`);
-    else map.times.forEach(k=>r.c[k]&&chips.push(r.c[k]));
-    ["purpose","dest"].forEach(k=>cell(r,k)&&chips.push(cell(r,k)));
-    let h=chips.map(v=>`<span class="chip">${esc(v)}</span>`).join("");
-    if(map.male!==undefined||map.female!==undefined)h+=`<span class="chip">ကျား ${esc(cell(r,"male")||0)} · မ ${esc(cell(r,"female")||0)}</span>`;
-    const clash=rows.filter(o=>o!==r&&isActive(o)&&isActive(r)&&overlap(o,r));
-    if(clash.length){const pos=[r,...clash].sort((a,b)=>a.n-b.n).indexOf(r)+1;h+=`<span class="chip warn">အချိန်ထပ်နေသည် · ${pos} ဆုံးတောင်း</span>`}
-    return`<article class="card glass" data-n="${r.n}" tabindex="0" style="animation-delay:${Math.min(i,10)*.07}s">
-      <div class="cicon">${CAR}<span class="dot ${active?"red":"grey"}"></span></div>
-      <div><div class="who">${esc(who)}</div><div class="dept">${esc(cell(r,"dept"))}${cell(r,"created")?" · တောင်းရက် "+esc(fmtDate(normDate(r.cells[map.created]))||cell(r,"created")):""}</div><div class="chips">${h}</div></div>
-      <span class="badge ${cls}">${esc(label)}</span></article>`;
-  }).join("");
-  document.querySelectorAll(".card").forEach(el=>{const o=()=>openModal(+el.dataset.n);el.onclick=o;el.onkeydown=e=>{if(e.key==="Enter")o()}});
-}
-function openModal(n){
-  const r=rows.find(x=>x.n===n);if(!r)return;const [cls,label]=statusInfo(cell(r,"status"));
-  $("#sheet").innerHTML=`<div style="display:flex;justify-content:space-between;gap:12px;align-items:start">
-  <div><h2>${esc(cell(r,"name")||r.c[0])}</h2><div class="sub">တောင်းသည့် အစဉ် #${r.n}</div></div><span class="badge ${cls}">${esc(label)}</span></div>
-  <div class="rows">${headers.map((h,i)=>r.c[i]!==""?`<div class="row"><span>${esc(h)}</span><span>${esc(r.c[i])}</span></div>`:"").join("")}</div>
-  <div style="margin-top:20px;text-align:right"><button class="btn" id="close">ပိတ်မည်</button></div>`;
-  $("#modal").classList.add("open");$("#close").onclick=closeModal;$("#close").focus();
-}
-const closeModal=()=>$("#modal").classList.remove("open");
-$("#modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal()});
-document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
-
-$("#date").addEventListener("input",e=>{if(e.target.value){selDate=e.target.value;showAll=false;render()}});
-$("#prev").onclick=()=>{showAll=false;selDate=addDays(selDate,-1);render()};
-$("#next").onclick=()=>{showAll=false;selDate=addDays(selDate,1);render()};
-$("#today").onclick=()=>{showAll=false;selDate=todayISO();render()};
-$("#tomorrow").onclick=()=>{showAll=false;selDate=addDays(todayISO(),1);render()};
-$("#all").onclick=()=>{showAll=true;render()};
-$("#refresh").onclick=load;
-
-
-load();setInterval(load,AUTO_REFRESH_MS);
-</script>
-</body>
-</html>
+      const cells=headers.map((_,i)=>{const c=(r.c||[])[i];return c?{
