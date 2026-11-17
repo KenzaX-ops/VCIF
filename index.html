@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="my">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -43,7 +43,7 @@ border:1px solid var(--edge);box-shadow:inset 0 1px 0 rgba(255,255,255,.28),inse
 @keyframes letter{to{opacity:1;transform:none;filter:none}}
 
 /* frame */
-.frame{position:relative;z-index:1;max-width:1040px;margin:18px auto;padding:22px;border-radius:34px;opacity:0;animation:fade .8s 2.9s forwards}
+.frame{position:relative;z-index:1;max-width:1040px;margin:18px auto;padding:22px;border-radius:34px;opacity:0;opacity: 1}
 .rail{position:absolute;left:-22px;top:150px;display:none;flex-direction:column;gap:10px;padding:10px;border-radius:30px;z-index:3}
 @media(min-width:1120px){.rail{display:flex}}
 .ib{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:var(--text);cursor:pointer;border:1px solid var(--edge);background:rgba(255,255,255,.07);transition:.25s;text-decoration:none}
@@ -125,47 +125,42 @@ footer b{font-size:.95rem}
 <body>
 <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
 
-<div id="intro" aria-hidden="true"><div class="stage">
-  <div class="il glass"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M3 13l2-6a2 2 0 0 1 2-1.4h10a2 2 0 0 1 2 1.4l2 6v4h-3v-2H6v2H3z"/><circle cx="7.5" cy="13" r=".7"/><circle cx="16.5" cy="13" r=".7"/></svg></div>
-  <div class="road"><svg class="car" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M3 13l2-6a2 2 0 0 1 2-1.4h10a2 2 0 0 1 2 1.4l2 6v4h-3v-2H6v2H3z"/><circle cx="7.5" cy="13" r=".7"/><circle cx="16.5" cy="13" r=".7"/></svg></div>
-  <div class="it" id="it"></div>
-  <div class="is">ကားတောင်းခံမှု စာရင်း</div>
-</div></div>
+
 
 <div class="frame glass">
   <nav class="rail glass" aria-label="menu">
-    <button class="ib" id="r-ref" aria-label="ပြန်ယူမည်"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg></button>
-    <button class="ib" id="r-today" aria-label="ယနေ့"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 11h18"/></svg></button>
-    <a class="ib" href="#contact" aria-label="ဆက်သွယ်ရန်"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></a>
+    <button class="ib" id="r-ref" aria-label="Refresh"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg></button>
+    <button class="ib" id="r-today" aria-label="Today"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 11h18"/></svg></button>
+    <a class="ib" href="#contact" aria-label="Contact"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></a>
   </nav>
 
   <header class="top">
     <div class="brand">
-      <div class="logo"><svg viewBox="0 0 24 24"><path d="M5 17h14M3 13l2-6a2 2 0 0 1 2-1.4h10a2 2 0 0 1 2 1.4l2 6v4h-3v-2H6v2H3z"/><circle cx="7.5" cy="13" r=".6"/><circle cx="16.5" cy="13" r=".6"/></svg></div>
-      <div><h1>Office Vehicle Info</h1><div class="sub" id="upd">ကားတောင်းခံမှု စာရင်းများ</div></div>
+      <div class="logo"><svg viewBox="0 0 24 24"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></div>
+      <div><h1>Office Vehicle Info</h1><div class="sub" id="upd">Vehicle Request List</div></div>
     </div>
-    <button class="pill" id="refresh"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>ပြန်ယူမည်</button>
+    <button class="pill" id="refresh"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>Refresh</button>
   </header>
 
   <section class="hero">
-    <h2>ကားအခြေအနေ<br>တစ်ချက်တည်း။</h2>
-    <p>ရက်စွဲရွေးပြီး ကားအားမအား၊ ဘယ်သူ ဘယ်အချိန် ဘယ်ကိုသွားမလဲ ကြည့်နိုင်ပါတယ်။</p>
+    <h2>Vehicle Status<br>at a Glance.</h2>
+    <p>Select a date to check vehicle availability, schedules, and destinations.</p>
     <div class="veh glass">
       <div class="vh">
-        <div class="vi"><svg viewBox="0 0 24 24"><path d="M5 17h14M3 13l2-6a2 2 0 0 1 2-1.4h10a2 2 0 0 1 2 1.4l2 6v4h-3v-2H6v2H3z"/><circle cx="7.5" cy="13" r=".7"/><circle cx="16.5" cy="13" r=".7"/></svg><span class="dot" id="vdot"></span></div>
-        <div class="vt"><b>Vehicle 1</b><span id="vstate">စစ်ဆေးနေသည်…</span></div>
+        <div class="vi"><svg viewBox="0 0 24 24"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg><span class="dot" id="vdot"></span></div>
+        <div class="vt"><b>Vehicle 1</b><span id="vstate">Checking...</span></div>
       </div>
       <div class="tl"><div class="bar" id="bar"></div><div class="ticks" id="ticks"></div></div>
     </div>
   </section>
 
   <div class="dbar">
-    <button class="pill" id="prev" aria-label="ယခင်ရက်">‹</button>
-    <input id="date" type="date" aria-label="ရက်စွဲ">
-    <button class="pill" id="next" aria-label="နောက်ရက်">›</button>
-    <button class="pill on" id="today">ယနေ့</button>
-    <button class="pill" id="tomorrow">မနက်ဖြန်</button>
-    <button class="pill" id="all">အားလုံး</button>
+    <button class="pill" id="prev" aria-label="Prev">‹</button>
+    <input id="date" type="date" aria-label="Date">
+    <button class="pill" id="next" aria-label="Next">›</button>
+    <button class="pill on" id="today">Today</button>
+    <button class="pill" id="tomorrow">Tomorrow</button>
+    <button class="pill" id="all">All</button>
   </div>
 
   <main class="list" id="list"></main>
@@ -195,7 +190,7 @@ const todayISO = () => isoOf(new Date());
 const addDays = (iso,n) => { const d = new Date(iso+"T00:00:00"); d.setDate(d.getDate()+n); return isoOf(d); };
 const PIN = '<svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.6"/></svg>';
 
-$("#it").innerHTML = [..."Office Vehicle Info"].map((c,i) => `<span style="animation-delay:${1+i*.04}s">${c===" "?"&nbsp;":c}</span>`).join("");
+
 $("#ticks").innerHTML = [6,7,8,9,10,11,12,1,2,3,4,5,6].map((h,i) => `<span style="left:${i*100/12}%">${h}</span>`).join("");
 
 let rows=[], headers=[], map={}, selDate=todayISO(), showAll=false;
@@ -250,9 +245,9 @@ function slotOf(r){
 }
 function statusInfo(s){
   s = String(s).trim().toLowerCase();
-  if(/မသွား|reject|den|declin|cancel|ပယ်|ငြင်း/.test(s)) return ["s-no","မသွားဖြစ်ပါ","no"];
-  if(/သွားမည်|approv|accept|confirm|အတည်ပြု|ခွင့်ပြု/.test(s)) return ["s-ok","သွားမည်","ok"];
-  if(!s || /pend|wait|new|review|စောင့်|ဆိုင်း/.test(s)) return ["s-wait","စောင့်ဆိုင်းဆဲ","wait"];
+  if(/မသွား|reject|den|declin|cancel|ပယ်|ငြင်း/.test(s)) return ["s-no","Cancelled","no"];
+  if(/သွားမည်|approv|accept|confirm|အတည်ပြု|ခွင့်ပြု/.test(s)) return ["s-ok","Approved","ok"];
+  if(!s || /pend|wait|new|review|စောင့်|ဆိုင်း/.test(s)) return ["s-wait","Pending","wait"];
   return ["s-na", s, "na"];
 }
 const isActive = r => statusInfo(cell(r,"status"))[2] !== "no";
@@ -264,4 +259,14 @@ async function load(){
     const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&headers=1&range=A4:L&sheet=${encodeURIComponent(SHEET_TAB)}&_=${Date.now()}`;
     const res = await fetch(url); if(!res.ok) throw new Error("HTTP "+res.status);
     const txt = await res.text();
-    const json = JS
+    const json = JSON.parse(txt.substring(txt.indexOf("{"), txt.lastIndexOf("}")+1));
+    if(json.status==="error") throw new Error("sheet error");
+    let cols = json.table.cols.map(c => c.label||""), data = json.table.rows||[];
+    if(cols.every(l => !l) && data.length){ cols = (data[0].c||[]).map(c => c ? String(c.f ?? c.v ?? "") : ""); data = data.slice(1); }
+    headers = cols.map((h,i) => h || "Column "+(i+1));
+    rows = data.map((r,idx) => {
+      const cells = headers.map((_,i) => { const c=(r.c||[])[i]; return c ? {v:c.v,f:c.f} : {v:"",f:""}; });
+      return {n:idx+1, cells, c:cells.map(x => x.f!=null && x.f!=="" ? x.f : (x.v==null ? "" : x.v))};
+    }).filter(r => r.c.some(v => String(v).trim()!==""));
+    detect();
+    rows.forE
