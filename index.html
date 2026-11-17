@@ -250,7 +250,10 @@ async function load(){
     render();
     $("#upd").textContent = "Last updated: " + new Date().toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"});
   }catch(e){
-    $("#list").innerHTML = `<div class="msg glass"><h3>Service Temporarily Unavailable</h3><p>Unable to load data. Please contact the founder directly if urgent.</p><div class="cs" style="margin-top:14px"><a class="pill" href="https://t.me/oliiverknox" target="_blank" rel="noopener">@oliiverknox</a><button class="pill on" onclick="load()">Try Again</button></div></div>`;
+    const detail = (e && e.message) ? e.message : String(e);
+    $("#vstate").textContent = "Connection error: " + detail;
+    $("#vdot").className = "dot red";
+    $("#list").innerHTML = `<div class="msg glass"><h3>Unable to load Google Sheets data</h3><p style="overflow-wrap:anywhere">${esc(detail)}</p><p style="margin-top:8px">Please send this error message to the website developer.</p><div class="cs" style="margin-top:14px"><button class="pill on" onclick="load()">Try Again</button></div></div>`;
   }finally{ b1.classList.remove("spin"); }
 }
 
@@ -291,5 +294,3 @@ function render(){
   $("#date").value = showAll ? "" : selDate;
   ["today","tomorrow","all"].forEach(id => $("#"+id).classList.remove("on"));
   if(showAll) $("#all").classList.add("on");
-  else if(selDate===todayISO()) $("#today").classList.add("on");
-  else if(selDate===addDays(todayISO(),1)) $("#tomorrow").classLis
